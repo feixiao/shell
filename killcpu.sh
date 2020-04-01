@@ -1,0 +1,30 @@
+#! /bin/bash  
+# filename killcpu.sh 
+if [ $# != 1 ] ; then 
+  echo "USAGE: $0 <CPUs>"
+  exit 1; 
+fi
+
+for i in `seq $1` 
+do
+  echo -ne "  
+i=0;  
+while true 
+do 
+i=i+1;  
+done" | /bin/sh & 
+  pid_array[$i]=$! ; 
+done
+
+time=$(date "+%Y-%m-%d %H:%M:%S")
+echo "${time}"
+
+for i in "${pid_array[@]}"; do
+  echo 'kill ' $i ';'; 
+done
+
+sleep 20
+
+for i in "${pid_array[@]}"; do
+  kill $i;
+done
